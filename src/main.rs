@@ -12,11 +12,20 @@ fn main() {
     window.set_key_polling(true);
     window.make_current();
 
+    gl::load_with(|s| window.get_proc_address(s) as *const _);
+
     while !window.should_close() {
         glfw.poll_events();
         for (_, event) in glfw::flush_messages(&events) {
             handle_window_event(&mut window, event);
         }
+
+        unsafe {
+            gl::ClearColor(0.3, 0.3, 0.3, 1.0);
+            gl::Clear(gl::COLOR_BUFFER_BIT);
+        }
+
+        window.swap_buffers();
     }
 }
 
