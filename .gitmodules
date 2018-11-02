@@ -1,0 +1,3 @@
+[submodule "rusty-gl"]
+	path = rusty-gl
+	url = git@github.com:Emmatipate/rusty-gl.git

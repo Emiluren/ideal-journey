@@ -4,5 +4,6 @@ version = "0.1.0"
 authors = ["Emil Segerbäck"]
 
 [dependencies]
-gl = "*"
-glfw = "*"
+gl = "0.10.0"
+rgl = { path = "rusty-gl" }
+glfw = "0.25.0"
