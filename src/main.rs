@@ -6,7 +6,6 @@ use glfw::{Action, Context, Key};
 use gl::types::*;
 use std::ptr;
 use std::str;
-use std::ffi::CString;
 
 static VERTEX_DATA: [GLfloat; 6] = [
     0.0, 0.5,
@@ -85,7 +84,7 @@ fn main() {
         300, 300,
         "Hello, this is window",
         glfw::WindowMode::Windowed
-    ) .expect("Failed to create GLFW window.");
+    ).expect("Failed to create GLFW window.");
 
     window.set_key_polling(true);
     window.make_current();
@@ -112,9 +111,7 @@ fn main() {
 
     rgl::use_program(program);
 
-    let pos_attr = unsafe {
-         gl::GetAttribLocation(program.into(), CString::new("position").unwrap().as_ptr())
-    };
+    let pos_attr = rgl::get_attrib_location(program, "position");
 
     rgl::enable_vertex_attrib_array(pos_attr as GLuint);
     rgl::vertex_attrib_pointer(pos_attr as GLuint, 2, rgl::Type::Float, false, 0);
@@ -125,12 +122,10 @@ fn main() {
             handle_window_event(&mut window, event);
         }
 
-        unsafe {
-            gl::ClearColor(0.3, 0.3, 0.3, 1.0);
-            gl::Clear(gl::COLOR_BUFFER_BIT);
+        rgl::clear_color(0.3, 0.3, 0.3, 1.0);
+        unsafe { gl::Clear(gl::COLOR_BUFFER_BIT) };
 
-            gl::DrawArrays(gl::TRIANGLES, 0, 3);
-        }
+        rgl::draw_arrays(rgl::Primitive::Triangles, 0, 3);
 
         window.swap_buffers();
     }
@@ -142,9 +137,7 @@ fn handle_window_event(window: &mut glfw::Window, event: glfw::WindowEvent) {
             window.set_should_close(true)
         }
         glfw::WindowEvent::Size(w, h) => {
-            unsafe {
-                gl::Viewport(0, 0, w, h);
-            }
+            unsafe { gl::Viewport(0, 0, w, h) }
         }
         _ => {}
     }
