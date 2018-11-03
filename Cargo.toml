@@ -7,3 +7,4 @@ authors = ["Emil Segerbäck"]
 gl = "0.10.0"
 rgl = { path = "rusty-gl" }
 glfw = "0.25.0"
+nalgebra = "0.16.8"
